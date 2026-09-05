@@ -121,9 +121,9 @@ function createArcturusSound(context, destination, logoPoints) {
     const soundButton=root.querySelector('.av-sound');
     let soundContext,soundGraph,soundOn=false,soundMutedByUser=false,sleepTimer;
     function updateSoundButton() {
-      soundButton.textContent=soundOn?'Sound on':'Sound off';
       soundButton.setAttribute('aria-pressed',String(soundOn));
       soundButton.setAttribute('aria-label',soundOn?'Mute procedural sound':'Enable procedural sound');
+      soundButton.title=soundButton.getAttribute('aria-label');
     }
     async function enableSound() {
       clearTimeout(sleepTimer);
@@ -139,7 +139,7 @@ function createArcturusSound(context, destination, logoPoints) {
         soundOn=true;soundGraph.setEnabled(true);soundGraph.reset();updateSoundButton();
         if(!active)sleepTimer=setTimeout(()=>soundContext.suspend().catch(()=>{}),150);
       } catch(error) {
-        soundOn=false;soundButton.textContent='Sound unavailable';soundButton.disabled=true;
+        soundOn=false;updateSoundButton();soundButton.disabled=true;soundButton.title='Sound unavailable in this browser';
         soundButton.setAttribute('aria-pressed','false');soundButton.setAttribute('aria-label','Sound unavailable in this browser');
       }
     }
